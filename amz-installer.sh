@@ -83,6 +83,9 @@ yum -y install php70w* --skip-broken
 yum -y remove php70w-mysqlnd
 yum -y install php70w-mysql
 
+# Make mlocatedb current
+updatedb
+
 chkconfig postgresql on
 service postgresql initdb
 service postgresql start
@@ -98,6 +101,13 @@ make prefix=/usr/local/git all
 make prefix=/usr/local/git install
 export PATH=$PATH:/usr/local/git/bin
 source /etc/bashrc
+
+# Install Node
+cd /usr/src
+curl --silent --location https://rpm.nodesource.com/setup_9.x | sudo bash -
+sudo yum -y install nodejs
+
+cd /tmp
 
 export LANG=en_US
 /usr/bin/cpan CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple DBI DBD::ODBC JSON::PP::Boolean MAKAMAKA/JSON-2.51.tar.gz JSON --force
@@ -143,30 +153,47 @@ useradd ops
 passwd ops
 
 echo
-echo
-echo
-echo
-echo
-echo
-echo
+
 echo
 
+echo
+
+echo
+
+echo
+
+echo
+
+echo
+
+echo
+
+echo "NODE Version:"
 node --version
 echo
 echo
+echo "PHP Version:"
 php --version
 echo
 echo
+echo "PERL Version:"
 perl --version
 echo
 echo
+echo "MySQL Version:"
 mysql --version
 echo
 echo
+echo "Apache HTTPD Version:"
 httpd -v
 echo
 echo
+echo "OpenSSL Version:"
 openssl version
+echo
+echo
+echo "PostgreSQL Version:"
+/usr/bin/psql --version
 echo
 echo
 
