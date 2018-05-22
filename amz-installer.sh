@@ -6,7 +6,8 @@
 # First build an Amazon Linux AMI and copy this installer script to /tmp
 # This installer uses Amazon Linux AMI release 2017.09
 
-sudo -s
+# You should just execute this as root, but if you copy and paste this, make sure you sudo first.
+#sudo -s
 
 # Get all the info you need to continue
 echo "Enter the FQDN of this server (IE: \"my.dev.server.com\")"
