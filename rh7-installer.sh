@@ -129,10 +129,6 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 /usr/sbin/setenforce 0
 
 
-
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
-
 yum clean headers
 yum clean packages
 yum clean metadata
@@ -144,6 +140,13 @@ yum -y install lynx php-devel php-gd php-imap php-ldap php-mysql php-odbc php-xm
 yum -y install httpd mysql mysql-devel mysql-server which flex make gcc wget unzip zip nmap fileutils gcc-c++ curl curl-devel 
 yum -y install perl-libwww-perl ImageMagick libxml2 libxml2-devel perl-HTML-Parser perl-DBI perl-Net-DNS perl-URI perl-Digest-SHA1 
 yum -y install postgresql postgresql-contrib postgresql-devel postgresql-server cpan perl-YAML mod_ssl openssl
+
+wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
+yum update
+
+yum -y install epel-release
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
 # Uncomment this section if you want PHP 5.6
 #yum -y remove php*
@@ -163,9 +166,9 @@ yum -y install php70w-mysql
 updatedb
 
 
-chkconfig postgresql on
-service postgresql initdb
-service postgresql start
+systemctl enable postgresql.service
+postgresql-setup initdb
+/bin/systemctl start postgresql.service
 
 # Install GIT
 yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel -y
@@ -187,7 +190,7 @@ sudo yum -y install nodejs
 cd /tmp
 
 export LANG=en_US
-/usr/bin/cpan CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple DBI DBD::ODBC JSON::PP::Boolean MAKAMAKA/JSON-2.51.tar.gz JSON --force
+/usr/bin/cpan install --force CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple DBI DBD::ODBC JSON::PP::Boolean MAKAMAKA/JSON-2.51.tar.gz JSON --force
 
 # Generate private key 
 openssl genrsa -out ca.key 2048 
@@ -209,18 +212,19 @@ mv ca.csr /etc/pki/tls/private/ca.csr
 sed -i 's/SSLCertificateFile \/etc\/pki\/tls\/certs\/localhost.crt/SSLCertificateFile \/etc\/pki\/tls\/certs\/ca.crt/' /etc/httpd/conf.d/ssl.conf
 sed -i 's/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/localhost.key/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/ca.key/' /etc/httpd/conf.d/ssl.conf
 
-chkconfig --level 345 mysqld on
-chkconfig --level 345 httpd on
-service httpd restart
-service mysqld restart
+systemctl enable mysqld.service
+systemctl enable httpd.service
+/bin/systemctl restart httpd.service
+/bin/systemctl restart mysqld.service
 /usr/bin/mysql_secure_installation
 
 #PAUSE
 
-chkconfig ntpd on 
-/etc/init.d/ntpd start 
-service postfix stop
-/sbin/chkconfig postfix off
+systemctl enable ntpd.service
+/bin/systemctl restart ntpd.service
+
+systemctl disable postfix.service
+/bin/systemctl stop postfix.service
 
 # Create a separate "ops" user with sudo access:
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config   
