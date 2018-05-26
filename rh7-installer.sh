@@ -94,8 +94,13 @@ firewall-cmd --zone=public --permanent --add-port=587/tcp
 firewall-cmd --zone=public --permanent --add-port=81/tcp
 firewall-cmd --zone=public --permanent --add-port=2081/tcp
 firewall-cmd --zone=public --permanent --add-port=2084/tcp
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --permanent --add-port=443/tcp
 
 systemctl enable firewalld
+firewall-cmd --reload
+
+
 
 
 
