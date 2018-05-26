@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ##################################################################################
 # Building a LAMP stack (with extras)
 # This will build a LAMP stack with the addition of Git, Node, and PGSQL
