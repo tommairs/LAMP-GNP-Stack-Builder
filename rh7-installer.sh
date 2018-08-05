@@ -15,7 +15,7 @@ echo "Enter the FQDN of this server (IE: \"my.dev.server.com\")"
 read FQDN
 
 echo "What timezone is the server in? (EST,CST,MST,PST)"
-read MYTZ
+read TZ
 
 
  export PUBLICIP=`curl -s checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//' `
@@ -136,10 +136,8 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 /usr/sbin/setenforce 0
 
 
-yum clean headers
-yum clean packages
-yum clean metadata
-
+wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
 yum update -y
 
 yum -y install perl sysstat ntp gdb lsof.x86_64 wget yum-utils bind-utils telnet mlocate lynx unzip sudo 
@@ -147,10 +145,6 @@ yum -y install lynx php-devel php-gd php-imap php-ldap php-mysql php-odbc php-xm
 yum -y install httpd mysql mysql-devel mysql-server which flex make gcc wget unzip zip nmap fileutils gcc-c++ curl curl-devel 
 yum -y install perl-libwww-perl ImageMagick libxml2 libxml2-devel perl-HTML-Parser perl-DBI perl-Net-DNS perl-URI perl-Digest-SHA1 
 yum -y install postgresql postgresql-contrib postgresql-devel postgresql-server cpan perl-YAML mod_ssl openssl
-
-wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
-sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
-yum update
 
 yum -y install epel-release
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
