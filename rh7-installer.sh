@@ -39,9 +39,6 @@ read TZ
    fi
 
 
-
-PRIVATEIP=`hostname -i`
- 
 sed -i "s/HOSTNAME=.*/HOSTNAME=$FQDN/" /etc/sysconfig/network
 echo  "$PRIVATEIP    $FQDN" >> /etc/hosts
 hostname $FQDN
