@@ -210,23 +210,24 @@ mv ca.csr /etc/pki/tls/private/ca.csr
 sed -i 's/SSLCertificateFile \/etc\/pki\/tls\/certs\/localhost.crt/SSLCertificateFile \/etc\/pki\/tls\/certs\/ca.crt/' /etc/httpd/conf.d/ssl.conf
 sed -i 's/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/localhost.key/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/ca.key/' /etc/httpd/conf.d/ssl.conf
 
-systemctl enable mysqld.service
+systemctl enable ntpd.service
+/bin/systemctl restart ntpd.service
+systemctl disable postfix.service
+/bin/systemctl stop postfix.service
 systemctl enable httpd.service
 /bin/systemctl restart httpd.service
 /bin/systemctl restart mysqld.service
-/usr/bin/mysql_secure_installation
 
-#PAUSE
 
-systemctl enable ntpd.service
-/bin/systemctl restart ntpd.service
+# Make sure server is only accessible by PubKey
+echo "
+## Configure for pubkey only logins
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+" >>  /etc/ssh/sshd_config 
 
-systemctl disable postfix.service
-/bin/systemctl stop postfix.service
 
-# Create a separate "ops" user with sudo access:
-sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config   
-echo "ops       ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
 service sshd restart
 
 useradd ops
@@ -281,6 +282,15 @@ echo
 echo "You should 'init 6' here to make sure everything comes back up ok."
 
 echo "DONE"
+
+# End Script here 
+###################################################################
+# Then run the MySQL Secure COnfig
+
+systemctl enable mysqld.service
+/usr/bin/mysql_secure_installation
+
+#PAUSE
 
 
 
