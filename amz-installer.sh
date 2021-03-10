@@ -14,6 +14,10 @@
 # Get all the info you need to continue
 echo "Enter the FQDN of this server (IE: \"my.dev.server.com\")"
 read FQDN
+echo " What is your full name?"
+read $USERNAME 
+echo "What is your email address?"
+read $EMAIL
 
 PRIVATEIP=`hostname -i`
  
@@ -169,6 +173,27 @@ chkconfig ntpd on
 /etc/init.d/ntpd start 
 service postfix stop
 /sbin/chkconfig postfix off
+
+
+echo "
+##############################################
+Welcome to the web server 
+[ https://$FQDN ]
+
+ - for any questions, please contact
+$USERNAME <$EMAIL>
+##############################################
+" > /etc/motd
+
+echo "
+cat /etc/*elease
+echo " > /etc/motd.sh
+
+echo "sh /etc/motd.sh" >> /etc/profile
+
+
+
+
 
 echo
 echo
