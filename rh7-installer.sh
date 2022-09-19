@@ -233,6 +233,25 @@ UsePAM no
 
 service sshd restart
 
+
+echo "
+##############################################
+Welcome to the web server 
+[ https://$FQDN ]
+ - for any questions, please contact
+$USERNAME <$EMAIL>
+##############################################
+" > /etc/motd
+
+echo "
+cat /etc/*elease
+echo " > /etc/motd.sh
+
+echo "sh /etc/motd.sh" >> /etc/profile
+
+
+
+
 useradd ops
 passwd ops
 
