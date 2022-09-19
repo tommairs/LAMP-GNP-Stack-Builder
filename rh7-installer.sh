@@ -240,8 +240,24 @@ Welcome to the web server
 [ https://$FQDN ]
  - for any questions, please contact
 $USERNAME <$EMAIL>
+Installed with:
+" >/etc/motd
+
+cat /etc/redhat-release >>/etc/motd
+httpd -v >>/etc/motd
+mysql --version >>/etc/motd
+php --version |egrep "(PHP .*) \(" >>/etc/motd
+perl --version |egrep "(perl .*) \(" >>/etc/motd
+echo " " >>/etc/motd
+git --version >>/etc/motd
+openssl version >>/etc/motd
+echo "Node: " >>/etc/motd
+node --version >>/etc/motd
+/usr/bin/psql --version >>/etc/motd
+
+echo "
 ##############################################
-" > /etc/motd
+" >> /etc/motd
 
 echo "
 cat /etc/*elease
