@@ -190,12 +190,15 @@ cd /tmp
 export LANG=en_US
 /usr/bin/cpan install --force CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple DBI DBD::ODBC JSON::PP::Boolean MAKAMAKA/JSON-2.51.tar.gz JSON --force
 
+cd /tmp
+
 # Generate private key 
 openssl genrsa -out ca.key 2048 
 
 # Generate CSR 
 openssl req -new -key ca.key -out ca.csr
 
+echo "If this script stops here, check the script and run everyting after the \"PAUSE\""
 
 # PAUSE 
 
@@ -203,9 +206,9 @@ openssl req -new -key ca.key -out ca.csr
 openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
 
 # Copy the files to the correct locations
-mv ca.crt /etc/pki/tls/certs
-mv ca.key /etc/pki/tls/private/ca.key
-mv ca.csr /etc/pki/tls/private/ca.csr
+mv -f ca.crt /etc/pki/tls/certs
+mv -f ca.key /etc/pki/tls/private/ca.key
+mv -f ca.csr /etc/pki/tls/private/ca.csr
 
 sed -i 's/SSLCertificateFile \/etc\/pki\/tls\/certs\/localhost.crt/SSLCertificateFile \/etc\/pki\/tls\/certs\/ca.crt/' /etc/httpd/conf.d/ssl.conf
 sed -i 's/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/localhost.key/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/ca.key/' /etc/httpd/conf.d/ssl.conf
