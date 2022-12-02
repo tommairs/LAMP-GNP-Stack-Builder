@@ -1,0 +1,22 @@
+###############################
+# Manifest File
+# Update any variables here before running the installer script.
+#
+###############################
+
+# Server friendly name. IE: "My Web Server"
+export FNAME=""
+
+# Server FQDN. IE: www.myserver.com
+export MYFQDN=""
+
+# The Server Owner Name. IE: "Bob Smith"
+export OWNERNAME=""
+
+# The Server owner email. IE: bsmith@myserver.com
+export EMAIL=""
+
+# The time zone this server operates in.  IE: MST
+export TZ=""
+
+
