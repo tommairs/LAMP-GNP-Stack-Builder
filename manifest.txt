@@ -19,4 +19,17 @@ export EMAIL=""
 # The time zone this server operates in.  IE: MST
 export TZ=""
 
+# For the certificate, what country code are you in? (CA,US,UK, etc)
+export CERT_CO=""
+
+# For the certificate, what State or Province are you in? (Alberta, California, etc)"
+export CERT_ST=""
+
+# For the certificate, what city are you in? (Edmonton, Houston, etc)"
+export CERT_LO=""
+
+# For the certificate, what is the name of your company or organization"
+export CERT_ORG=""
+
+
 
