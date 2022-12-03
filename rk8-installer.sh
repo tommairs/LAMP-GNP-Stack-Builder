@@ -47,6 +47,27 @@ fi
     echo "What timezone is the server in? (EST,CST,MST,PST)"
     read TZ
   fi 
+  
+   if [ "$CERT_CO" == "" ]; then
+    echo "For the certificate, what country code are you in? (CA,US,UK, etc)"
+    read CERT_CO
+  fi
+
+  if [ "$CERT_ST" == "" ]; then
+    echo "For the certificate, what State or Province are you in? (Alberta, California, etc)"
+    read CERT_ST
+  fi 
+  
+  if [ "$CERT_LO" == "" ]; then
+    echo "For the certificate, what city are you in? (Edmonton, Houston, etc)"
+    read CERT_LO
+  fi 
+  
+  if [ "$CERT_ORG" == "" ]; then
+    echo "For the certificate, what is the name of your company or organization"
+    read CERT_ORG
+  fi 
+
 
 
  export MYHOST=`hostname -f`
@@ -184,9 +205,8 @@ cpanm install --force CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple
 openssl genrsa -out ca.key 2048 
 
 # Generate CSR 
-#openssl req -new -key ca.key -out ca.csr
-openssl req -new -key ca.key -out ca.csr -subj "C=CA/ST=Alberta/L=Calgary/O=Development/CN=$MYFQDN/                   
-
+#openssl req -new -key ca.key -out ca.csr           
+openssl req -new -key ca.key -out ca.csr -subj "C=$CERT_CO/ST=$CERT_ST/L=$CERT_LO/O=$CERT_ORG/CN=$MYFQDN/"
 echo "If this script stops here, check the script and run everyting after the \"PAUSE\""
 
 # PAUSE 
