@@ -1,5 +1,5 @@
 # LAMP-GNP-Stack-Builder
-This will build a LAMP stack with the addition of Git, Node, and PGSQL
+This will build a LAMPP stack with the addition of Git, Node, and PGSQL
 
 ## Installing
  - Create a new instance
