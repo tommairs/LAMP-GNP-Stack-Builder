@@ -216,7 +216,7 @@ openssl genrsa -out ca.key 2048
 
 # Generate CSR 
 #openssl req -new -key ca.key -out ca.csr           
-openssl req -new -key ca.key -out ca.csr -subj "C=$CERT_CO/ST=$CERT_ST/L=$CERT_LO/O=$CERT_ORG/CN=$MYFQDN/"
+openssl req -new -key ca.key -out ca.csr -subj "/C=$CERT_CO/ST=$CERT_ST/L=$CERT_LO/O=$CERT_ORG/CN=$MYFQDN/"
 echo "If this script stops here, check the script and run everyting after the \"PAUSE\""
 
 # PAUSE 
