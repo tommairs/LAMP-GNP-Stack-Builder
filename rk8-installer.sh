@@ -179,11 +179,11 @@ dnf -y install postgresql* cpan perl-YAML mod_ssl openssl
 dnf -y install git-all nodejs npm
 
 # Make mlocatedb current
-updatedb
+sudo updatedb
 
 #Make sure it all stays up to date
 #Run a dnf update at 3AM daily
-echo "0 3 * * * root /usr/bin/dnf update -y >/dev/null 2>&1">/etc/cron.d/dnf-updates
+sudo echo "0 3 * * * root /usr/bin/dnf update -y >/dev/null 2>&1">/etc/cron.d/dnf-updates
 
 
 ### - Not even installed at this point - does it matter?
@@ -203,13 +203,13 @@ firewall-cmd --zone=public --permanent --add-port=587/tcp
 
 systemctl enable firewalld
 firewall-cmd --reload
-cpan 
+
 systemctl enable postgresql.service
 postgresql-setup --initdb --unit postgresql  
 /bin/systemctl start postgresql.service
 
 export LANG=en_US
-cpanm install --force CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple DBI DBD::ODBC JSON::PP::Boolean MAKAMAKA/JSON-2.51.tar.gz JSON 
+sudo cpanm install --force CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple DBI DBD::ODBC JSON::PP::Boolean MAKAMAKA/JSON-2.51.tar.gz JSON 
 
 # Generate private key 
 openssl genrsa -out ca.key 2048 
