@@ -229,11 +229,9 @@ echo "
 Welcome to $FNAME 
 [ https://$MYFQDN ]
  - for any questions, please contact
-$OWNERRNAME <$EMAIL>
+$OWNERNAME <$EMAIL>
 
-Installed with:
-" >/etc/motd
-
+Installed with:" >/etc/motd
 cat /etc/redhat-release >>/etc/motd
 httpd -v >>/etc/motd
 mysql --version >>/etc/motd
@@ -250,28 +248,10 @@ echo "
 ##################################################################
 " >> /etc/motd
 
-# echo "
-#cat /etc/*elease
-#echo " > /etc/motd.sh
+echo
+echo
 
-#echo "sh /etc/motd.sh" >> /etc/profile
-
-echo
-echo
-echo This system is installed and running the following services:
-
-cat /etc/redhat-release
-httpd -v
-mysql --version
-php --version
-perl --version
-echo NodeJS: 
-node --version
-git --version
-openssl version
-/usr/bin/psql --version
-echo
-echo
+cat /etc/motd
 
 echo "You should now complete the MySQL secure installation process....."
 
