@@ -5,9 +5,9 @@
 # This will build a LAMPP stack with the addition of Git, Node, and PGSQL
 ##################################################################################
 
-# First build a Rocky 8 instance and copy this installer script to /tmp
+# First read the README, then build a Rocky 8 instance and copy this installer script to /tmp
 # OR Clone this repo, then ...
-cd LAMP-GNP-Stack-Builder
+#cd LAMP-GNP-Stack-Builder
 
 
 # You should just execute this as root, but if you copy and paste this, make sure you sudo first.
@@ -49,30 +49,32 @@ fi
   fi 
 
 
+ export MYHOST=`hostname -f`
  export PUBLICIP=`curl -s checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//' `
  export PRIVATEIP=`hostname -i`
 
 
+
    if [ $TZ = "EST" ]; then
-      MYTZ="America/New_York"
+      export MYTZ="America/New_York"
    fi
    if [ $TZ = "CST" ]; then
-      MYTZ="America/Chicago"
+      export MYTZ="America/Chicago"
    fi
    if [ $TZ = "MST" ]; then
-      MYTZ="America/Edmonton"
+      export MYTZ="America/Edmonton"
    fi
    if [ $TZ = "PST" ]; then
-      MYTZ="America/Los_Angeles"
+      export MYTZ="America/Los_Angeles"
    fi
    if [ $MYTZ = "" ]; then
-      MYTZ="America/Los_Angeles"
+      export MYTZ="America/Los_Angeles"
    fi
 
 
-sed -i "s/HOSTNAME=.*/HOSTNAME=$FQDN/" /etc/sysconfig/network
-echo  "$PRIVATEIP    $FQDN" >> /etc/hosts
-hostname $FQDN
+sed -i "s/HOSTNAME=.*/HOSTNAME=$MYFQDN/" /etc/sysconfig/network
+echo  "$PRIVATEIP    $MYFQDN" >> /etc/hosts
+hostname $MYFQDN
 
 
 systemctl stop iptables.service
@@ -89,35 +91,11 @@ systemctl disable postfix.service
 systemctl stop  qpidd.service
 systemctl disable qpidd.service
 
-
-
-echo "ZONE=public
-" >> /etc/sysconfig/network-scripts/ifcfg-eth0
-
-systemctl stop firewalld
-systemctl start firewalld.service
-firewall-cmd --set-default-zone=public
-firewall-cmd --zone=public --change-interface=eth0
-firewall-cmd --zone=public --permanent --add-service=http
-firewall-cmd --zone=public --permanent --add-service=https
-firewall-cmd --zone=public --permanent --add-service=ssh
-firewall-cmd --zone=public --permanent --add-service=smtp
-firewall-cmd --zone=public --permanent --add-port=587/tcp
-firewall-cmd --zone=public --permanent --add-port=81/tcp
-firewall-cmd --zone=public --permanent --add-port=2081/tcp
-firewall-cmd --zone=public --permanent --add-port=2084/tcp
-firewall-cmd --permanent --add-port=80/tcp
-firewall-cmd --permanent --add-port=443/tcp
-
-systemctl enable firewalld
-firewall-cmd --reload
-
-
 echo "export TZ=$MYTZ" >> /etc/profile
 export TZ=$MYTZ
 
 echo "$PRIVATEIP  $HOSTNAME
-$PUBLICIP $FQDN" >> /etc/hosts
+$PUBLICIP $MYFQDN" >> /etc/hosts
 
 
 # Modify sysctl with Momentum friendly values
@@ -152,86 +130,62 @@ echo "..............................."
 
 
 dnf -y install epel-release
-rpm -Uvh https://mirror.webtatic.com/dnf/el8/webtatic-release.rpm
+dnf config-manager --set-enabled powertools
+# rpm -Uvh https://mirror.webtatic.com/dnf/el8/webtatic-release.rpm
 
-dnf -y install perl mcelog firewalld make gcc curl cpan mysql*
-dnf -y install sysstat ntp gdb lsof.x86_64 wget dnf-utils bind-utils telnet mlocate lynx unzip sudo 
-# dnf -y install php-devel php-gd php-imap php-ldap php-mysql php-odbc php-xml php-xmlrpc php-pgsql  
-dnf -y install httpd mysql mysql-devel mysql-server which flex make gcc wget unzip zip nmap fileutils gcc-c++ curl curl-devel 
+dnf -y install perl mcelog firewalld make gcc curl cpan tree
+dnf -y install libssh perl-App-cpanminus jq gnutls gnutls-devel
+dnf -y install sysstat chrony gdb lsof.x86_64 wget dnf-utils bind-utils telnet mlocate lynx unzip sudo 
+dnf -y install php*  
+dnf -y install httpd which flex make gcc wget zip nmap fileutils gcc-c++ curl-devel 
+dnf -y install --skip-broken mysql* 
 dnf -y install perl-libwww-perl ImageMagick libxml2 libxml2-devel perl-HTML-Parser perl-DBI perl-Net-DNS perl-URI perl-Digest-SHA1 
-dnf -y install postgresql postgresql-contrib postgresql-devel postgresql-server cpan perl-YAML mod_ssl openssl
-
-# Uncomment this section if you want PHP 5.6
-#dnf -y remove php*
-#dnf -y install php56w php56w-opcache
-#dnf -y install php56w* --skip-broken
-#dnf -y remove php56w-mysqlnd
-#dnf -y install php56w-mysql
-
-# Uncomment this section if you want PHP 7.0
-dnf -y remove php*
-dnf -y install php70w php70w-opcache
-dnf -y install php70w* --skip-broken
-dnf -y remove php70w-mysqlnd
-dnf -y install php70w-mysql
-
-
-
-wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
-sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
-dnf update -y
-
+dnf -y install postgresql* cpan perl-YAML mod_ssl openssl
+dnf -y install git-all nodejs npm
 
 # Make mlocatedb current
 updatedb
-
 
 #Make sure it all stays up to date
 #Run a dnf update at 3AM daily
 echo "0 3 * * * root /usr/bin/dnf update -y >/dev/null 2>&1">/etc/cron.d/dnf-updates
 
 
+### - Not even installed at this point - does it matter?
+echo "ZONE=public
+" >> /etc/sysconfig/network-scripts/ifcfg-eth0
 
+systemctl stop firewalld
+systemctl start firewalld.service
+firewall-cmd --set-default-zone=public
+firewall-cmd --zone=public --change-interface=eth0
+firewall-cmd --zone=public --permanent --add-service=http
+firewall-cmd --zone=public --permanent --add-service=https
+firewall-cmd --zone=public --permanent --add-service=ssh
+firewall-cmd --zone=public --permanent --add-service=smtp
+firewall-cmd --zone=public --permanent --add-port=587/tcp
+firewall-cmd --zone=public --permanent --add-port=81/tcp
+firewall-cmd --zone=public --permanent --add-port=2081/tcp
+firewall-cmd --zone=public --permanent --add-port=2084/tcp
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --permanent --add-port=443/tcp
 
+systemctl enable firewalld
+firewall-cmd --reload
+cpan 
 systemctl enable postgresql.service
-postgresql-setup initdb
+postgresql-setup --initdb --unit postgresql  
 /bin/systemctl start postgresql.service
 
-# Install GIT
-dnf install -y git-all
-
-## Skip rest?
-dnf install curl-devel expat-devel gettext-devel openssl-devel zlib-devel -y
-dnf install gcc perl-ExtUtils-MakeMaker -y
-cd /usr/src
-wget https://www.kernel.org/pub/software/scm/git/git-2.9.3.tar.gz
-tar xzf git-2.9.3.tar.gz 
-cd git-2.9.3
-make prefix=/usr/local/git all
-make prefix=/usr/local/git install
-export PATH=$PATH:/usr/local/git/bin
-source /etc/bashrc
-
-# Install Node
-
-dnf install -y nodejs npm
-
-cd /usr/src
-curl --silent --location https://rpm.nodesource.com/setup_9.x | sudo bash -
-sudo dnf -y install nodejs
-
-cd /tmp
-
 export LANG=en_US
-/usr/bin/cpan install --force CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple DBI DBD::ODBC JSON::PP::Boolean MAKAMAKA/JSON-2.51.tar.gz JSON --force
-
-cd /tmp
+cpanm install --force CPAN LWP::UserAgent Carp URI JSON Data::Dumper XML::Simple DBI DBD::ODBC JSON::PP::Boolean MAKAMAKA/JSON-2.51.tar.gz JSON 
 
 # Generate private key 
 openssl genrsa -out ca.key 2048 
 
 # Generate CSR 
-openssl req -new -key ca.key -out ca.csr
+#openssl req -new -key ca.key -out ca.csr
+openssl req -new -key ca.key -out ca.csr -subj "C=CA/ST=Alberta/L=Calgary/O=Development/CN=$MYFQDN/                   
 
 echo "If this script stops here, check the script and run everyting after the \"PAUSE\""
 
@@ -248,8 +202,8 @@ mv -f ca.csr /etc/pki/tls/private/ca.csr
 sed -i 's/SSLCertificateFile \/etc\/pki\/tls\/certs\/localhost.crt/SSLCertificateFile \/etc\/pki\/tls\/certs\/ca.crt/' /etc/httpd/conf.d/ssl.conf
 sed -i 's/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/localhost.key/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/ca.key/' /etc/httpd/conf.d/ssl.conf
 
-systemctl enable ntpd.service
-/bin/systemctl restart ntpd.service
+systemctl enable chronyd.service
+/bin/systemctl restart chronyd.service
 systemctl disable postfix.service
 /bin/systemctl stop postfix.service
 systemctl enable httpd.service
@@ -301,52 +255,19 @@ echo " > /etc/motd.sh
 echo "sh /etc/motd.sh" >> /etc/profile
 
 
+echo
+echo
+echo This system is installed and running the following services:
 
-
-useradd ops
-passwd ops
-
-echo
-
-echo
-
-echo
-
-echo
-
-echo
-
-echo
-
-echo
-
-echo
-
-echo "NODE Version:"
-node --version
-echo
-echo
-echo "PHP Version:"
-php --version
-echo
-echo
-echo "PERL Version:"
-perl --version
-echo
-echo
-echo "MySQL Version:"
-mysql --version
-echo
-echo
-echo "Apache HTTPD Version:"
+cat /etc/redhat-release
 httpd -v
-echo
-echo
-echo "OpenSSL Version:"
+mysql --version
+php --version
+perl --version
+echo NodeJS: 
+node --version
+git --version
 openssl version
-echo
-echo
-echo "PostgreSQL Version:"
 /usr/bin/psql --version
 echo
 echo
