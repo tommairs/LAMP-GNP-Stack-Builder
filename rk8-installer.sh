@@ -97,21 +97,6 @@ sed -i "s/HOSTNAME=.*/HOSTNAME=$MYFQDN/" /etc/sysconfig/network
 echo  "$PRIVATEIP    $MYFQDN" >> /etc/hosts
 hostname $MYFQDN
 
-
-systemctl stop iptables.service
-systemctl stop ip6tables.service
-systemctl mask iptables.service
-systemctl mask ip6tables.service
-
-systemctl enable ntpd.service
-systemctl start  ntpd.service
-
-systemctl stop  postfix.service
-systemctl disable postfix.service
-
-systemctl stop  qpidd.service
-systemctl disable qpidd.service
-
 echo "export TZ=$MYTZ" >> /etc/profile
 export TZ=$MYTZ
 
@@ -185,11 +170,7 @@ firewall-cmd --zone=public --permanent --add-service=https
 firewall-cmd --zone=public --permanent --add-service=ssh
 firewall-cmd --zone=public --permanent --add-service=smtp
 firewall-cmd --zone=public --permanent --add-port=587/tcp
-firewall-cmd --zone=public --permanent --add-port=81/tcp
-firewall-cmd --zone=public --permanent --add-port=2081/tcp
-firewall-cmd --zone=public --permanent --add-port=2084/tcp
-firewall-cmd --permanent --add-port=80/tcp
-firewall-cmd --permanent --add-port=443/tcp
+
 
 systemctl enable firewalld
 firewall-cmd --reload
