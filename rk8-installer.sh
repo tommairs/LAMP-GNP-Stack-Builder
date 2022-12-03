@@ -14,10 +14,18 @@
 #sudo -s
 
 
+# Start an installer log
+INSTLOG=/var/log/lamppstack.log
+touch $INSTLOG
+echo Log Time: `date` >> $INSTLOG
+echo Starting the LAMPP Stack Installer log >> $INSTLOG
+
+
 FILE=`find -path "./manifest.txt"`
 if [ "$FILE" != "" ]; then
   echo "Found a manifext to load, continuing with that"
   source $FILE
+  echo Using the manifest file  >> $INSTLOG
 fi
 
 ##################################################################
@@ -103,6 +111,25 @@ export TZ=$MYTZ
 echo "$PRIVATEIP  $HOSTNAME
 $PUBLICIP $MYFQDN" >> /etc/hosts
 
+# Update the install log
+echo "Using the following settings for install:"  >> $INSTLOG
+echo Log Time: `date` >> $INSTLOG
+echo MAC Address = $MYMAC >> $INSTLOG
+echo HOSTNAME = $MYFQDN >> $INSTLOG
+echo Public IP = $PUBLICIP >> $INSTLOG
+echo Private IP = $PRIVATEIP >> $INSTLOG
+echo Time Zone = $MYTZ \($TZ\) >> $INSTLOG
+echo Friendly Name = $FNAME >> $INSTLOG
+echo System Owner = $OWNERNAME >> $INSTLOG
+echo Owner Email = $EMAIL >> $INSTLOG
+echo Certificate Country = $CERT_CO >> $INSTLOG
+echo Certificate State = $CERT_ST >> $INSTLOG
+echo Certificate City = $CERT_LO >> $INSTLOG
+echo Certificate Organization = $CERT_ORG >> $INSTLOG
+echo Certificate Domain = $MYFQDN >> $INSTLOG
+
+echo >> $INSTLOG
+
 
 # Modify sysctl with Momentum friendly values
 sudo echo "
@@ -124,6 +151,8 @@ sudo /sbin/sysctl -p /etc/sysctl.d/ec-sysctl.conf
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config  
 /usr/sbin/setenforce 0
 
+# Update the install log
+echo "Turning off SELINUX:"  >> $INSTLOG
 
 echo "Updating existing packages..."
 echo "..............................."
@@ -249,7 +278,11 @@ echo "
 ##################################################################
 " >> /etc/motd
 
-echo
+# Update the install log
+echo "Done with main install. Summary:"  >> $INSTLOG
+echo Log Time: `date` >> $INSTLOG
+cat /etc/motd >>  $INSTLOG
+
 echo
 
 cat /etc/motd
