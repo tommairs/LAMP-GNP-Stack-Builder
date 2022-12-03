@@ -8,5 +8,6 @@ This will build a LAMP stack with the addition of Git, Node, and PGSQL
  - Clone this repo with ```git clone https://github.com/tommairs/LAMP-GNP-Stack-Builder```
  - Enter the repo ... ```cd LAMP-GNP-Stack-Builder```
  - Switch to a privileged user, ```sudo -s```
- - Execute the installer for your Linux flavour.  IE: sh rk8-installer.sh
+ - Modify the manifest.txt file if needed
+ - Execute the installer for your Linux flavour.  IE: ```sh rk8-installer.sh```
  
