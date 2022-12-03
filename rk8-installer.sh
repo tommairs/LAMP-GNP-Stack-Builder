@@ -224,11 +224,13 @@ service sshd restart
 
 
 echo "
-##############################################
-Welcome to the web server 
-[ https://$FQDN ]
+##################################################################
+##################################################################
+Welcome to $FNAME 
+[ https://$MYFQDN ]
  - for any questions, please contact
-$USERNAME <$EMAIL>
+$OWNERRNAME <$EMAIL>
+
 Installed with:
 " >/etc/motd
 
@@ -237,7 +239,6 @@ httpd -v >>/etc/motd
 mysql --version >>/etc/motd
 php --version |egrep "(PHP .*) \(" >>/etc/motd
 perl --version |egrep "(perl .*) \(" >>/etc/motd
-echo " " >>/etc/motd
 git --version >>/etc/motd
 openssl version >>/etc/motd
 echo "Node: " >>/etc/motd
@@ -245,15 +246,15 @@ node --version >>/etc/motd
 /usr/bin/psql --version >>/etc/motd
 
 echo "
-##############################################
+##################################################################
+##################################################################
 " >> /etc/motd
 
-echo "
-cat /etc/*elease
-echo " > /etc/motd.sh
+# echo "
+#cat /etc/*elease
+#echo " > /etc/motd.sh
 
-echo "sh /etc/motd.sh" >> /etc/profile
-
+#echo "sh /etc/motd.sh" >> /etc/profile
 
 echo
 echo
@@ -272,17 +273,9 @@ openssl version
 echo
 echo
 
-
-echo "You should 'init 6' here to make sure everything comes back up ok."
-
-echo "DONE"
-
-# End Script here 
-###################################################################
-# Then run the MySQL Secure COnfig
+echo "You should now complete the MySQL secure installation process....."
 
 systemctl enable mysqld.service
 /usr/bin/mysql_secure_installation
 
-#PAUSE
-
+# EOF
