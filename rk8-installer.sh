@@ -173,6 +173,7 @@ dnf -y install libssh perl-App-cpanminus jq gnutls gnutls-devel
 dnf -y install sysstat chrony gdb lsof.x86_64 wget dnf-utils bind-utils telnet mlocate lynx unzip sudo 
 dnf -y install php*  
 dnf -y install httpd which flex make gcc wget zip nmap fileutils gcc-c++ curl-devel 
+dnf -y install cmake clang
 dnf -y install --skip-broken mysql* 
 dnf -y install perl-libwww-perl ImageMagick libxml2 libxml2-devel perl-HTML-Parser perl-DBI perl-Net-DNS perl-URI perl-Digest-SHA1 
 dnf -y install postgresql* cpan perl-YAML mod_ssl openssl
