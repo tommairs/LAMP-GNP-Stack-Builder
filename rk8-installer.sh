@@ -276,9 +276,6 @@ node --version >>/etc/motd
 /usr/bin/psql --version >>/etc/motd
 python3 --version >>/etc/motd
 
-echo "##################################################################
-" >> /etc/motd
-
 # Update the install log
 echo "Done with main install. Summary:"  >> $INSTLOG
 echo Log Time: `date` >> $INSTLOG
