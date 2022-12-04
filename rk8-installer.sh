@@ -177,6 +177,7 @@ dnf -y install --skip-broken mysql*
 dnf -y install perl-libwww-perl ImageMagick libxml2 libxml2-devel perl-HTML-Parser perl-DBI perl-Net-DNS perl-URI perl-Digest-SHA1 
 dnf -y install postgresql* cpan perl-YAML mod_ssl openssl
 dnf -y install git-all nodejs npm
+dnf -y install python36
 
 # Make mlocatedb current
 sudo updatedb
@@ -272,6 +273,7 @@ openssl version >>/etc/motd
 echo "Node: " >>/etc/motd
 node --version >>/etc/motd
 /usr/bin/psql --version >>/etc/motd
+python3 --version >>/etc/motd
 
 echo "
 ##################################################################
