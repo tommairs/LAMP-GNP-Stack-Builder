@@ -288,6 +288,9 @@ cat /etc/motd
 echo "You should now complete the MySQL secure installation process....."
 
 systemctl enable mysqld.service
+mysqladmin -u root password CHANGEME
+ 
+echo "Remember to change the root password from CHANGEME"
 /usr/bin/mysql_secure_installation
 
 # EOF
