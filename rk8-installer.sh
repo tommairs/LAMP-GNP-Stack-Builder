@@ -179,6 +179,9 @@ dnf -y install perl-libwww-perl ImageMagick libxml2 libxml2-devel perl-HTML-Pars
 dnf -y install postgresql* cpan perl-YAML mod_ssl openssl
 dnf -y install git-all nodejs npm
 dnf -y install python36
+Adding RustC
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 
 # Make mlocatedb current
 sudo updatedb
