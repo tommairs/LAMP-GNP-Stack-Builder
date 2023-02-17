@@ -179,8 +179,28 @@ dnf -y install perl-libwww-perl ImageMagick libxml2 libxml2-devel perl-HTML-Pars
 dnf -y install postgresql* cpan perl-YAML mod_ssl openssl
 dnf -y install git-all nodejs npm
 dnf -y install python36
-Adding RustC
+
+###############################################
+# Adding RustC and Go
+wget https://go.dev/dl/go1.19.3.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+echo "export PATH=$PATH:/usr/local/go/bin" >>  /etc/profile
+echo "export PATH=$PATH:/usr/local/go/bin" >>  ~/.profile
+echo "source /etc/profile" >> /etc/motd.sh
+go version
+
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.profile
+source ~/.cargo/env
+rustc -V
+
+# Append to MOTD
+go version >>/etc/motd
+rustc -V  >>/etc/motd
+################################################
+
 
 
 # Make mlocatedb current
