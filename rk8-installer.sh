@@ -196,10 +196,6 @@ source ~/.profile
 source ~/.cargo/env
 rustc -V
 
-# Append to MOTD
-go version >>/etc/motd
-rustc -V  >>/etc/motd
-################################################
 
 
 
@@ -298,6 +294,8 @@ echo "Node: " >>/etc/motd
 node --version >>/etc/motd
 /usr/bin/psql --version >>/etc/motd
 python3 --version >>/etc/motd
+go version >>/etc/motd
+rustc -V  >>/etc/motd
 
 # Update the install log
 echo "Done with main install. Summary:"  >> $INSTLOG
