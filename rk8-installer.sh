@@ -191,12 +191,10 @@ echo "export PATH=$PATH:/usr/local/go/bin" >>  ~/.profile
 echo "source /etc/profile" >> /etc/motd.sh
 go version
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source ~/.profile
 source ~/.cargo/env
 rustc -V
-
-
 
 
 # Make mlocatedb current
