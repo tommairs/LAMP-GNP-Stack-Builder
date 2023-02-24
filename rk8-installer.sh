@@ -77,7 +77,6 @@ fi
   fi 
 
 
-
  export MYHOST=`hostname -f`
  export PUBLICIP=`curl -s checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//' `
  export PRIVATEIP=`hostname -i`
