@@ -303,7 +303,7 @@ echo
 
 cat /etc/motd
 
-echo "You should now complete the MySQL secure installation process....."
+echo "You should now complete the MySQL secure installation process, then reboot to ensure it all comes back up"
 
 sudo systemctl enable mysqld.service
 sudo mysqladmin -u root password CHANGEME
