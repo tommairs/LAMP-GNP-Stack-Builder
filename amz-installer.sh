@@ -67,9 +67,8 @@ systemctl enable ntpd.service
 systemctl start  ntpd.service
 
 
-# Update and start Firewalld
-systemctl enable firewalld
 
+### - Not even installed at this point - does it matter?
 echo "ZONE=public
 " >> /etc/sysconfig/network-scripts/ifcfg-eth0
 
@@ -82,12 +81,14 @@ firewall-cmd --zone=public --permanent --add-service=https
 firewall-cmd --zone=public --permanent --add-service=ssh
 firewall-cmd --zone=public --permanent --add-service=smtp
 firewall-cmd --zone=public --permanent --add-port=587/tcp
-firewall-cmd --zone=public --permanent --add-port=81/tcp
-firewall-cmd --zone=public --permanent --add-port=2081/tcp
-firewall-cmd --zone=public --permanent --add-port=2084/tcp
+
 
 systemctl enable firewalld
+firewall-cmd --reload
 
+systemctl enable postgresql.service
+postgresql-setup --initdb --unit postgresql  
+/bin/systemctl start postgresql.service
 
 chkconfig postgresql on
 service postgresql initdb
