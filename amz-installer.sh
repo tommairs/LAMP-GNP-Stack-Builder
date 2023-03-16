@@ -6,7 +6,7 @@
 ##################################################################################
 
 # First build an Amazon Linux AMI and copy this installer script to /tmp
-# This installer uses Amazon Linux AMI  amzn2-ami-hvm-2.0.20210219.0-x86_64-gp2
+# This installer uses Amazon Linux AMI  ami-0df24e148fdb9f1d8
 
 # You should just execute this as root, but if you copy and paste this, make sure you sudo first.
 #sudo -s
@@ -25,26 +25,6 @@ sed -i "s/HOSTNAME=.*/HOSTNAME=$FQDN/" /etc/sysconfig/network
 echo  "$PRIVATEIP    $FQDN" >> /etc/hosts
 hostname $FQDN
 
-
-
-echo "
-# This file controls the state of SELinux on the system.
-# SELINUX= can take one of these three values:
-#     enforcing - SELinux security policy is enforced.
-#     permissive - SELinux prints warnings instead of enforcing.
-#     disabled - No SELinux policy is loaded.
-SELINUX=disabled
-# SELINUXTYPE= can take one of these two values:
-#     targeted - Targeted processes are protected,
-#     mls - Multi Level Security protection.
-SELINUXTYPE=targeted
-" > /etc/selinux/config
-
-/usr/sbin/setenforce 0
-
-#rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-#rpm -Uvh https://mirror.webtatic.com/yum/el7/epel-release.rpm
-
 yum clean headers
 yum clean packages
 yum clean metadata
@@ -52,36 +32,19 @@ yum clean metadata
 yum update -y
 
 # Install any supporting packages that we may want for later...
-yum -y install perl mcelog sysstat ntp gdb lsof.x86_64 wget yum-utils bind-utils telnet mlocate lynx unzip sudo
-yum -y install make gcc curl cpan firewalld lynx
-yum -y install perl sysstat ntp gdb lsof.x86_64 wget yum-utils bind-utils telnet mlocate lynx unzip sudo 
+yum -y install perl wget yum-utils bind-utils telnet mlocate lynx unzip sudo
+yum -y install make gcc curl cpan firewalld
 yum -y install httpd httpd httpd-tools mod_ssl mysql mysql-devel mysql-server 
-yum -y install which flex make gcc wget unzip zip nmap fileutils gcc-c++ curl curl-devel 
-yum -y install perl-libwww-perl ImageMagick libxml2 libxml2-devel perl-HTML-Parser perl-DBI perl-Net-DNS perl-URI perl-Digest-SHA1 
-yum -y install postgresql postgresql-contrib postgresql-devel postgresql-server cpan perl-YAML mod_ssl openssl
-
-wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
-yum localinstall -y mysql57-community-release-el7-11.noarch.rpm 
-yum install -y mysql-community-server
-systemctl start mysqld.service
-
-
-# Installing PHP 7.3
-yum -y remove php*
-amazon-linux-extras disable php7.4
-amazon-linux-extras disable php7.2
-amazon-linux-extras enable php7.3
+yum -y install which flex nmap fileutils curl-devel 
+yum -y install postgresql postgresql-contrib postgresql-devel postgresql-server openssl openssl-devel
 yum install -y php php-{pear,cgi,common,curl,mbstring,gd,mysqlnd,gettext,bcmath,json,xml,fpm,intl,zip,imap}
 
 #Make sure it all stays up to date
 #Run a yum update at 3AM daily
 echo "0 3 * * * root /usr/bin/yum update -y >/dev/null 2>&1">/etc/cron.d/yum-updates
 
-
 # Make mlocatedb current
 updatedb
-
-
 
 # Turn off any services that we do not want
 # Turn on any ones that we do need
@@ -125,17 +88,8 @@ chkconfig postgresql on
 service postgresql initdb
 service postgresql start
 
-# Install GIT
-yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel -y
-yum install gcc perl-ExtUtils-MakeMaker -y
-cd /usr/src
-wget https://www.kernel.org/pub/software/scm/git/git-2.9.3.tar.gz
-tar xzf git-2.9.3.tar.gz 
-cd git-2.9.3
-make prefix=/usr/local/git all
-make prefix=/usr/local/git install
-export PATH=$PATH:/usr/local/git/bin
-source /etc/bashrc
+# Install Git
+yum install -y git
 
 # Install Node
 cd /usr/src
