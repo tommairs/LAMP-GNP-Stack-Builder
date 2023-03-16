@@ -47,20 +47,25 @@ echo "0 3 * * * root /usr/bin/yum update -y >/dev/null 2>&1">/etc/cron.d/yum-upd
 updatedb
 
 # Turn off any services that we do not want
-# Turn on any ones that we do need
 systemctl stop iptables.service
 systemctl stop ip6tables.service
 systemctl disable iptables.service
 systemctl disable ip6tables.service
+systemctl stop  postfix.service
+systemctl disable postfix.service
+systemctl stop  qpidd.service
+systemctl disable qpidd.service5
 
+chkconfig ntpd on 
+/etc/init.d/ntpd start 
+service postfix stop
+/sbin/chkconfig postfix off
+
+
+# Turn on any ones that we do need
 systemctl enable ntpd.service
 systemctl start  ntpd.service
 
-systemctl stop  postfix.service
-systemctl disable postfix.service
-
-systemctl stop  qpidd.service
-systemctl disable qpidd.service5
 
 # Update and start Firewalld
 systemctl enable firewalld
@@ -122,11 +127,6 @@ chkconfig --level 345 httpd on
 service httpd restart
 service mysqld restart
 
-
-chkconfig ntpd on 
-/etc/init.d/ntpd start 
-service postfix stop
-/sbin/chkconfig postfix off
 
 
 echo "
