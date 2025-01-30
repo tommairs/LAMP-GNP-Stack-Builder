@@ -165,7 +165,8 @@ echo "..............................."
 sudo apt install -y firewalld tree telnet git bind9 bind9-utils vim jq
 
 sudo apt install -y perl make gcc curl cpan tree jq wget locate  
-sudo apt install -y php php-mysql apache2 which flex zip nmap 
+sudo apt install -y php apache2 which flex zip nmap libapache2-mod-php
+sudo apt install -y php-cgi php-cli php-mysql php-pgsql
 sudo apt install -y mysql-server-8.0  postgresql 
 sudo apt install -y git-all nodejs npm
 sudo apt install -y python3
@@ -242,13 +243,11 @@ mv -f ca.csr /etc/pki/tls/private/ca.csr
 sed -i 's/SSLCertificateFile \/etc\/pki\/tls\/certs\/localhost.crt/SSLCertificateFile \/etc\/pki\/tls\/certs\/ca.crt/' /etc/httpd/conf.d/ssl.conf
 sed -i 's/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/localhost.key/SSLCertificateKeyFile \/etc\/pki\/tls\/private\/ca.key/' /etc/httpd/conf.d/ssl.conf
 
-systemctl enable chronyd.service
-/bin/systemctl restart chronyd.service
-systemctl disable postfix.service
-/bin/systemctl stop postfix.service
-systemctl enable httpd.service
-/bin/systemctl restart httpd.service
-/bin/systemctl restart mysqld.service
+sudo systemctl enable chronyd.service
+sudo /bin/systemctl restart chronyd.service
+sudo systemctl disable postfix.service
+sudo /bin/systemctl stop postfix.service
+sudo systemctl restart apache2.service 
 
 
 # Make sure server is only accessible by PubKey
