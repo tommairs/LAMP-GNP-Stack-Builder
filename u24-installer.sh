@@ -1,8 +1,7 @@
 #!/bin/bash
 
 ##################################################################################
-# Building a LAMPP stack (with Git, Node, and PGSQL too)
-# This will build a LAMPP stack with the addition of Git, Node, and PGSQL
+# Building a LAMPP stack (with Git, and PGSQL too)
 ##################################################################################
 
 # First read the README, then build an Ubuntu 24 instance 
@@ -15,12 +14,14 @@
 
 
 # Start an installer log
-INSTLOG=/var/log/fmn/lamppstack.log
-sudo mkdir -p /var/log/fmn/
+INSTLOG=/var/log/lampp/lamppstack.log
+sudo mkdir -p /var/log/lampp/
 sudo touch $INSTLOG
-sudo chmod 774 /var/log/fmn/ -R
+sudo chmod 774 /var/log/lampp/ -R
 echo Log Time: `date` |sudo tee -a $INSTLOG
 echo Starting the LAMPP Stack Installer log  |sudo tee -a $INSTLOG
+
+
 
 
 FILE=`find -path "./manifest.txt"`
@@ -150,6 +151,11 @@ kernel.shmmni = 4096 " | sudo tee -a /etc/sysctl.d/k-sysctl.conf
 sudo /sbin/sysctl -p /etc/sysctl.d/k-sysctl.conf
 
 
+
+# Run the certificate builder process with LetsEncrypt
+bash ./cert_builder.sh
+
+
 echo "Updating existing packages..."
 echo "..............................."
 
@@ -168,7 +174,6 @@ sudo apt install -y perl make gcc curl cpan tree jq wget locate
 sudo apt install -y php apache2 which flex zip nmap libapache2-mod-php
 sudo apt install -y php-cgi php-cli php-mysql php-pgsql
 sudo apt install -y mysql-server-8.0  postgresql 
-sudo apt install -y git-all nodejs npm
 sudo apt install -y python3
 
 
@@ -279,7 +284,6 @@ perl --version |egrep "(perl .*) \("  |sudo tee -a /etc/motd
 git --version  |sudo tee -a /etc/motd
 openssl version  |sudo tee -a /etc/motd
 echo "Node: "  |sudo tee -a /etc/motd
-node --version  |sudo tee -a /etc/motd
 /usr/bin/psql --version  |sudo tee -a /etc/motd
 python3 --version  |sudo tee -a /etc/motd
 go version  |sudo tee -a /etc/motd

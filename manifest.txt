@@ -1,35 +1,39 @@
-###############################
-# Manifest File
-# Update any variables here before running the installer script.
-#
-###############################
+# MANIFEST.TXT
+# Populate this to enable automated install
 
-# Server friendly name. IE: "My Web Server"
 export FNAME=""
-
-# Server FQDN. IE: www.myserver.com
 export MYFQDN=""
-
-# The Server Owner Name. IE: "Bob Smith"
+export DOMAIN=""
+export SELECTOR=""
+export SHORTNAME=""
+export RH_USER_NAME="" 
+export RH_PASSWORD=""
 export OWNERNAME=""
-
-# The Server owner email. IE: bsmith@myserver.com
 export EMAIL=""
-
-# The time zone this server operates in.  IE: MST
 export TZ=""
-
-# For the certificate, what country code are you in? (CA,US,UK, etc)
-export CERT_CO=""
-
-# For the certificate, what State or Province are you in? (Alberta, California, etc)"
+export MYTZ=""
+export CERT_CO="CA"
 export CERT_ST=""
-
-# For the certificate, what city are you in? (Edmonton, Houston, etc)"
 export CERT_LO=""
-
-# For the certificate, what is the name of your company or organization"
 export CERT_ORG=""
+export INSTALLTYPE=""
+export SSLDIR=""
 
-
-
+# Below is a potential sample and options:
+# export FNAME="MTA_Dev7 (Rocky 9)"
+# export MYFQDN="kdev7.yourdomain.com"
+# export DOMAIN="kdev7.yourdomain.com"
+# export SELECTOR="dkim1024"
+# export SHORTNAME="kdev7"
+# export RH_USER_NAME=""
+# export RH_PASSWORD=""
+# export OWNERNAME="Joe Coder"
+# export EMAIL="jc@yourdomain.com"
+# export TZ=MST
+# export MYTZ="America/Edmonton"
+# export CERT_CO="US"
+# export CERT_ST="Colorado"
+# export CERT_LO="Denver"
+# export CERT_ORG="yourdomain.com"
+# export INSTALLTYPE="dnf"  # Could also be "apt" for Debian/Ubuntu systems
+# export SSLDIR="Rocky"     # Could also be "Ubuntu" for Debian/Ubuntu systems
