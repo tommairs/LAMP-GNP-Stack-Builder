@@ -1,9 +1,16 @@
 # LAMP-GNP-Stack-Builder
-This will build a LAMPP stack with the addition of Git, Node, and PGSQL
+This will build a LAMPP stack with the addition of Git, and PGSQL
 
 ## Installing
  - Create a new instance
- - Install git with ```sudo dnf install -y git-all``` or ```sudo yum install -y git-all```
+ - Install git with 
+      ```sudo dnf install -y git-all``` 
+   or
+ 
+      ```sudo yum install -y git-all```
+   or 
+      ```sudo apt install -y git```
+
  - Go to a safe place, IE: ```cd /var/tmp```
  - Clone this repo with ```git clone https://github.com/tommairs/LAMP-GNP-Stack-Builder```
  - Enter the repo ... ```cd LAMP-GNP-Stack-Builder```
@@ -21,5 +28,5 @@ cd LAMP-GNP-Stack-Builder
 sudo sh rk8-installer.sh
 ```
  
-Tested: Rocky8
+Tested: Rocky8, Ubuntu26
 To Do: Retest AMZ, CentOS, RH8
