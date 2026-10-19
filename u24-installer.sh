@@ -173,6 +173,7 @@ sudo apt install -y firewalld tree telnet git bind9 bind9-utils vim jq
 sudo apt install -y perl make gcc curl cpan tree jq wget locate  
 sudo apt install -y php apache2 which flex zip nmap libapache2-mod-php
 sudo apt install -y php-cgi php-cli php-mysql php-pgsql
+sudo apt install -y php-xml php-mbstring php-curl
 sudo apt install -y mysql-server-8.0  postgresql 
 sudo apt install -y python3
 
