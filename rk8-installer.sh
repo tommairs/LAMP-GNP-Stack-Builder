@@ -171,6 +171,7 @@ dnf -y install perl mcelog firewalld make gcc curl cpan tree
 dnf -y install libssh perl-App-cpanminus jq gnutls gnutls-devel
 dnf -y install sysstat chrony gdb lsof.x86_64 wget dnf-utils bind-utils telnet mlocate lynx unzip sudo 
 dnf -y install php*  
+dnf -y install php-xml php-mbstring php-curl
 dnf -y install httpd which flex make gcc wget zip nmap fileutils gcc-c++ curl-devel 
 dnf -y install cmake clang
 dnf -y install --skip-broken mysql* 
